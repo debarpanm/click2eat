@@ -42,28 +42,8 @@ public class Customer implements UserDetails{
 	@Column(name = "PASSWORD")
 	private String password;
 	 
-	@Column(name = "one_time_password")
-	private String oneTimePassword;
-	 
 	@Column(name = "otp_requested_time")
 	private Date otpRequestedTime;
-
-
-	public boolean isOTPRequired() {
-	    if (this.getOneTimePassword() == null) {
-	        return false;
-	    }
-	     
-	    long currentTimeInMillis = System.currentTimeMillis();
-	    long otpRequestedTimeInMillis = this.otpRequestedTime.getTime();
-	     
-	    if (otpRequestedTimeInMillis + OTP_VALID_DURATION < currentTimeInMillis) {
-	        // OTP expires
-	        return false;
-	    }
-	     
-	    return true;
-	}
 
 
 	@Override
@@ -108,20 +88,11 @@ public class Customer implements UserDetails{
 	}
 
 
-	public Customer(Integer userId, String password, Long phoneNumber, String oneTimePassword) {
+	public Customer(Integer userId, String password, Long phoneNumber) {
 		super();
 		this.userId = userId;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
-		this.oneTimePassword = oneTimePassword;
 	}
-	
-	
-	/*
-	 * @Override public String getPassword() { if (customer.isOTPRequired()) {
-	 * return customer.getOneTimePassword(); }
-	 * 
-	 * return customer.getPassword(); }
-	 */
 
 }

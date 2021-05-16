@@ -55,38 +55,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		}
 		return null;	
 	}
-     
-	/*
-	 * @Autowired public void setAuthenticationManager(AuthenticationManager
-	 * authManager) { super.setAuthenticationManager(authManager); }
-	 * 
-	 * @Autowired
-	 * 
-	 * @Override public void setAuthenticationFailureHandler(
-	 * AuthenticationFailureHandler failureHandler) {
-	 * super.setAuthenticationFailureHandler(failureHandler); }
-	 * 
-	 * @Autowired
-	 * 
-	 * @Override public void setAuthenticationSuccessHandler(
-	 * AuthenticationSuccessHandler successHandler) {
-	 * super.setAuthenticationSuccessHandler(successHandler); }
-	 * 
-	 * @Override public Authentication attemptAuthentication( HttpServletRequest
-	 * request, HttpServletResponse response) throws AuthenticationException {
-	 * Integer phone = Integer.valueOf(request.getParameter("phone"));
-	 * 
-	 * Customer customer = customerService.getCustomerByEmail(phone);
-	 * 
-	 * if (customer != null) { if (customer.isOTPRequired()) { return
-	 * super.attemptAuthentication(request, response); }
-	 * 
-	 * System.out.println("attemptAuthentication - email: " + phone);
-	 * //customerService.generateOneTimePassword(customer); throw new
-	 * InsufficientAuthenticationException("OTP"); }
-	 * 
-	 * return super.attemptAuthentication(request, response); }
-	 */
- 
 
 }

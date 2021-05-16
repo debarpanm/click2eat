@@ -43,15 +43,13 @@ public class LoginServiceImpl implements LoginService{
     	}
     	
     	
-    	if(customer!=null) {		
-    		customer.setOneTimePassword(passwordEncoder.encode(otp));
+    	if(customer!=null) {
     		customer.setPassword(passwordEncoder.encode(otp));
     	    customer.setOtpRequestedTime(new Date());
     	    customerRepo.save(customer);
     	}else {
     		Customer cust = new Customer();
     		cust.setPhoneNumber(mobile);
-    		cust.setOneTimePassword(passwordEncoder.encode(otp));
     		cust.setPassword(passwordEncoder.encode(otp));
     		cust.setOtpRequestedTime(new Date());
    	     	customerRepo.saveAndFlush(cust);
@@ -69,16 +67,14 @@ public class LoginServiceImpl implements LoginService{
     private String generateOneTimePassword() throws NoSuchAlgorithmException {
     	
     	OtpGenerator otpGenerator = new OtpGenerator();
-    	String otp = otpGenerator.generateOtp(4, "123456789");
-        
-        //String encodedOTP = passwordEncoder.encode(OTP);
+    	String otp = otpGenerator.generateOtp(4, "0123456789");
          
         return otp;          
     }
  
     public void clearOTP(Customer customer) {
     	
-    	customer.setOneTimePassword(null);
+    	customer.setPassword(null);
         customer.setOtpRequestedTime(null);
         customerRepo.save(customer);
     }
@@ -95,8 +91,7 @@ public class LoginServiceImpl implements LoginService{
 			System.out.println("No User Found");
 		}
 		
-		return new Customer(customer.getUserId(),  customer.getPassword(),
-				Long.valueOf(mobile), customer.getOneTimePassword());
+		return new Customer(customer.getUserId(), customer.getPassword(), Long.valueOf(mobile));
 	}
 
 }

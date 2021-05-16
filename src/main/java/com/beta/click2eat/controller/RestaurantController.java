@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beta.click2eat.dto.RestaurantDto;
-import com.beta.click2eat.model.Restaurant;
 import com.beta.click2eat.service.RestaurantService;
 
 @RestController
+@RequestMapping(value = "/api/v1")
 public class RestaurantController {
 	
 	@Autowired
 	RestaurantService restaurantService;
 	
-	@RequestMapping(value="/api/v1/restaurant/nearest",method = RequestMethod.GET)
+	@RequestMapping(value="/restaurant/nearest",method = RequestMethod.GET)
 	public ResponseEntity<List<RestaurantDto>> getAllRestaurants(
 			@RequestParam(value = "userLat", required = true) Double userLat,
 			@RequestParam(value = "userLng", required = true) Double userLng) {

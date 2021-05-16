@@ -2,6 +2,8 @@ package com.beta.click2eat.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -19,6 +21,7 @@ import lombok.Setter;
 public class FoodCategory {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="CATEGORY_ID")
 	private Integer foodCategoryId;
 	

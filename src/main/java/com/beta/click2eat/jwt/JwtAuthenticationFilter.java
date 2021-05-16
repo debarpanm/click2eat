@@ -1,0 +1,92 @@
+package com.beta.click2eat.jwt;
+
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.beta.click2eat.service.LoginService;
+import com.beta.click2eat.utils.JwtUtils;
+
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter{
+	
+	@Autowired
+	JwtUtils jwtUtils;
+	
+	@Autowired
+	LoginService loginService;
+	
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		
+		String jwt = getJWTFromRequest(request);
+		
+		if(StringUtils.hasText(jwt) && jwtUtils.validateToken(jwt)) {
+			String mobile = jwtUtils.getMobileFromJWT(jwt);
+			
+			UserDetails userDetails = loginService.loadUserByUsername(mobile);
+			UsernamePasswordAuthenticationToken authentication =
+					new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
+		
+		filterChain.doFilter(request, response);
+		
+	}
+	
+	private String getJWTFromRequest(HttpServletRequest request) {
+		String bearerToken = request.getHeader("Authorization");
+		if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+			return bearerToken.substring(7,bearerToken.length());
+		}
+		return null;	
+	}
+     
+	/*
+	 * @Autowired public void setAuthenticationManager(AuthenticationManager
+	 * authManager) { super.setAuthenticationManager(authManager); }
+	 * 
+	 * @Autowired
+	 * 
+	 * @Override public void setAuthenticationFailureHandler(
+	 * AuthenticationFailureHandler failureHandler) {
+	 * super.setAuthenticationFailureHandler(failureHandler); }
+	 * 
+	 * @Autowired
+	 * 
+	 * @Override public void setAuthenticationSuccessHandler(
+	 * AuthenticationSuccessHandler successHandler) {
+	 * super.setAuthenticationSuccessHandler(successHandler); }
+	 * 
+	 * @Override public Authentication attemptAuthentication( HttpServletRequest
+	 * request, HttpServletResponse response) throws AuthenticationException {
+	 * Integer phone = Integer.valueOf(request.getParameter("phone"));
+	 * 
+	 * Customer customer = customerService.getCustomerByEmail(phone);
+	 * 
+	 * if (customer != null) { if (customer.isOTPRequired()) { return
+	 * super.attemptAuthentication(request, response); }
+	 * 
+	 * System.out.println("attemptAuthentication - email: " + phone);
+	 * //customerService.generateOneTimePassword(customer); throw new
+	 * InsufficientAuthenticationException("OTP"); }
+	 * 
+	 * return super.attemptAuthentication(request, response); }
+	 */
+ 
+
+}

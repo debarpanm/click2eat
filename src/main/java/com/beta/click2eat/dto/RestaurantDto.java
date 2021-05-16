@@ -17,6 +17,8 @@ public class RestaurantDto {
 	
 	private Double distance;
 	
+	private String unit;
+	
 	private String specialisation;
 	
 	private String image;
@@ -35,7 +37,7 @@ public class RestaurantDto {
 	
 	private Boolean isDelivery;
 	
-	
+	private Boolean isFavourite;
 
 	public RestaurantDto(Integer restaurantId, String restaurantName, String address, Double distance,
 			String specialisation, String image, Double rating, Boolean isOpen, Double avgCost, String discountType,
